@@ -29,7 +29,8 @@ banned is an ENUM (category) type of ('Yes', 'No').
 
 The cancellation rate is computed by dividing the number of canceled (by client or driver) requests with unbanned users by the total number of requests with unbanned users on that day.
 
-Write a solution to find the cancellation rate of requests with unbanned users (both client and driver must not be banned) each day between "2013-10-01" and "2013-10-03" with at least one trip. Round Cancellation Rate to two decimal points.
+Write a solution to find the cancellation rate of requests with unbanned users (both client and driver must not be banned) each day between "2013-10-01" and "2013-10-03" 
+with at least one trip. Round Cancellation Rate to two decimal points.
 
 */
 
@@ -49,15 +50,8 @@ Write a solution to find the cancellation rate of requests with unbanned users (
 -- - Dates are between 2013-10-01 and 2013-10-03 inclusive.
 -- - Output is rounded to 2 decimal places.
 
-SELECT 
-    t.request_at AS `Day`,  
-    ROUND(
-        SUM(t.status IN ('cancelled_by_driver', 'cancelled_by_client')) / COUNT(*), 
-        2
-    ) AS `Cancellation Rate`
-FROM Users u
-JOIN Trips t ON t.client_id = u.users_id AND u.banned = 'No'
+SELECT t.request_at AS `Day`,  ROUND(SUM(t.status IN ('cancelled_by_driver', 'cancelled_by_client')) / COUNT(*),2) AS `Cancellation Rate`
+FROM Users u JOIN Trips t ON t.client_id = u.users_id AND u.banned = 'No'
 JOIN Users u2 ON t.driver_id = u2.users_id AND u2.banned = 'No'
 WHERE t.request_at BETWEEN '2013-10-01' AND '2013-10-03'
-GROUP BY 1
-ORDER BY 1;
+GROUP BY 1 ORDER BY 1;
